@@ -12,11 +12,20 @@ interface AuthContextType {
   updateUser: (userData: User) => void;
 }
 
-// Create context with undefined as initial value
+// Create context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Export the provider component as default
-const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+// Create and export useAuth hook
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
+
+// Export AuthProvider component
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -30,46 +39,55 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     }
   };
 
-  const value = {
-    user,
-    login: async (email: string, password: string) => {
-      try {
-        const data = await authAPI.login(email, password);
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        setUser(data.user);
-      } catch (error) {
-        console.error('Login error:', error);
-        throw error;
-      }
-    },
-    signup: async (userData: any) => {
-      try {
-        const data = await authAPI.signup(userData);
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        setUser(data.user);
-        return data;
-      } catch (error) {
-        console.error('Signup error:', error);
-        throw error;
-      }
-    },
-    logout: () => {
-      try {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        setUser(null);
-      } catch (error) {
-        console.error('Logout error:', error);
-        toast.error('Failed to logout properly');
-      }
-    },
-    isLoading,
-    updateUser
+  const login = async (email: string, password: string) => {
+    try {
+      const data = await authAPI.login(email, password);
+      console.log('Login response:', data);
+      
+      const user = {
+        ...data.user,
+        role: data.user.role
+      };
+      
+      console.log('Processed user:', user);
+      
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(user));
+      setUser(user);
+    } catch (error) {
+      console.error('Login error:', error);
+      throw error;
+    }
   };
 
-  // Initialize auth state
+  const signup = async (userData: any) => {
+    try {
+      const data = await authAPI.signup(userData);
+      const user = {
+        ...data.user,
+        role: data.user.role
+      };
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(user));
+      setUser(user);
+      return data;
+    } catch (error) {
+      console.error('Signup error:', error);
+      throw error;
+    }
+  };
+
+  const logout = () => {
+    try {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      setUser(null);
+    } catch (error) {
+      console.error('Logout error:', error);
+      toast.error('Failed to logout properly');
+    }
+  };
+
   useEffect(() => {
     const initializeAuth = async () => {
       try {
@@ -78,11 +96,13 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 
         if (token && storedUser) {
           try {
-            // Set user from stored data immediately
-            setUser(JSON.parse(storedUser));
+            const parsedUser = JSON.parse(storedUser);
+            console.log('Stored user:', parsedUser);
+            setUser(parsedUser);
             
-            // Verify token in background
             const response = await authAPI.verifyToken(token);
+            console.log('Token verification response:', response);
+            
             if (!response.valid) {
               localStorage.removeItem('token');
               localStorage.removeItem('user');
@@ -90,13 +110,9 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
               toast.error('Your session has expired. Please login again.');
             }
           } catch (error) {
-            // On verification error, keep the session but log the error
-            console.error('Token verification error:', error);
+            console.error('Auth initialization error:', error);
           }
         }
-      } catch (error) {
-        console.error('Auth initialization error:', error);
-        toast.error('Failed to restore your session');
       } finally {
         setIsLoading(false);
       }
@@ -105,20 +121,20 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     initializeAuth();
   }, []);
 
+  const value = {
+    user,
+    login,
+    signup,
+    logout,
+    isLoading,
+    updateUser
+  };
+
   return (
     <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
 };
-
-// Custom hook to use auth context
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-}
 
 export default AuthProvider; 

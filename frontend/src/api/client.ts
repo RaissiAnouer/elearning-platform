@@ -1,60 +1,68 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { toast } from 'react-hot-toast';
 
 const client = axios.create({
   baseURL: 'http://localhost:5000/api',
   headers: {
     'Content-Type': 'application/json'
-  }
+  },
+  // Add timeout
+  timeout: 10000
 });
 
-// Add auth token to requests if available
+// Request interceptor
 client.interceptors.request.use(
-  (config) => {
+  (config: AxiosRequestConfig) => {
     console.log('Making request to:', config.url);
-    console.log('Request headers:', config.headers);
-    console.log('Request data:', config.data);
     
     const token = localStorage.getItem('token');
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers['Authorization'] = `Bearer ${token}`;
     }
     return config;
   },
   (error) => {
-    console.error('Request interceptor error:', error);
+    console.error('Request error:', error);
     return Promise.reject(error);
   }
 );
 
-// Handle response errors
+// Response interceptor
 client.interceptors.response.use(
   (response) => {
-    console.log('Response received:', {
-      status: response.status,
-      data: response.data,
-      headers: response.headers
-    });
     return response;
   },
   (error) => {
     console.error('Response error:', {
       status: error.response?.status,
       data: error.response?.data,
-      headers: error.response?.headers,
-      config: error.config
+      message: error.message
     });
 
-    // Don't automatically logout on 401
-    if (error.response?.status === 401) {
-      const storedUser = localStorage.getItem('user');
-      if (!storedUser) {
-        window.location.href = '/login';
-      }
+    // Handle network errors
+    if (!error.response) {
+      toast.error('Network error. Please check your connection.');
+      return Promise.reject(new Error('Network error'));
     }
 
-    const message = error.response?.data?.message || 'An error occurred';
-    toast.error(message);
+    // Handle timeout
+    if (error.code === 'ECONNABORTED') {
+      toast.error('Request timed out. Please try again.');
+      return Promise.reject(new Error('Request timed out'));
+    }
+
+    // Handle specific status codes
+    switch (error.response.status) {
+      case 404:
+        toast.error('Resource not found');
+        break;
+      case 500:
+        toast.error('Server error. Please try again later.');
+        break;
+      default:
+        toast.error(error.response.data.message || 'An error occurred');
+    }
+
     return Promise.reject(error);
   }
 );

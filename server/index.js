@@ -8,6 +8,8 @@ const userRoutes = require('./routes/user');
 const courseRoutes = require('./routes/courses');
 const Course = require('./models/Course');
 const connectDB = require('./config/db');
+const multer = require('multer');
+const fs = require('fs');
 
 // Verify the environment variable is loaded
 console.log('MONGO_URI:', process.env.MONGO_URI ? 'exists' : 'missing');
@@ -22,13 +24,11 @@ const initialCourses = [
     title: "Python pour Débutants : De Zéro à Héros",
     instructor: "Dr. Ahmed Ben Ali",
     duration: 20,
-    rating: 4.8,
     enrolledCount: 2500,
     image: "/images/courses/banners/python-basics.png",
     price: 299.99,
     description: "Découvrez les fondamentaux de Python, le langage de programmation le plus populaire. Maîtrisez la syntaxe de base, les structures de données et les concepts essentiels de la programmation.",
-    level: "Beginner",
-    students: 2500,
+    category: "Programming",
     status: "published",
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
@@ -38,44 +38,20 @@ const initialCourses = [
     title: "HTML & CSS : Les Fondamentaux du Web",
     instructor: "Dr. Sarah Mansour",
     duration: 25,
-    rating: 4.9,
     enrolledCount: 1800,
     image: "/images/courses/banners/html-css.jpg",
     price: 399.99,
     description: "Maîtrisez les bases du développement web avec HTML et CSS. Créez des sites web modernes, responsifs et professionnels. Un parcours complet pour devenir développeur web.",
-    level: "Beginner",
-    students: 1800,
+    category: "Web Development",
     status: "published",
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-  },
-  {
-    id: 'scratch-coding',
-    title: 'Scratch Coding',
-    description: 'Start your coding journey with Scratch. Perfect for beginners to learn programming concepts through visual blocks.',
-    instructor: 'Prof. Maria Garcia',
-    duration: '15 hours',
-    category: 'Programming',
-    level: 'Beginner',
-    price: 79.99,
-    students: 856,
-    rating: 4.7,
-    image: '/images/courses/scratch.jpg'
-  },
-  {
-    id: 'microsoft-office',
-    title: 'Microsoft Office',
-    description: 'Master Microsoft Office suite including Word, Excel, and PowerPoint. Boost your productivity with essential office skills.',
-    instructor: 'John Smith',
-    duration: '30 hours',
-    category: 'Office Skills',
-    level: 'All Levels',
-    price: 129.99,
-    students: 2156,
-    rating: 4.6,
-    image: '/images/courses/office.jpg'
   }
 ];
+
+// Add at the top of the file
+const MAX_RETRIES = 5;
+const RETRY_INTERVAL = 5000; // 5 seconds
 
 // Function to seed initial courses
 const seedInitialCourses = async () => {
@@ -84,6 +60,11 @@ const seedInitialCourses = async () => {
     
     for (const courseData of initialCourses) {
       try {
+        // Ensure duration is a number
+        if (typeof courseData.duration === 'string') {
+          courseData.duration = parseInt(courseData.duration);
+        }
+
         const existingCourse = await Course.findOne({ id: courseData.id });
         if (!existingCourse) {
           const course = await Course.create(courseData);
@@ -141,6 +122,22 @@ app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/users', userRoutes);
 
+// Add error handling for file uploads
+app.use((err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({ 
+        message: 'File is too large. Maximum size is 500MB' 
+      });
+    }
+    return res.status(400).json({ 
+      message: 'File upload error', 
+      error: err.message 
+    });
+  }
+  next(err);
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error('Error:', err);
@@ -156,11 +153,39 @@ app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
 
-// Connect to MongoDB and start server
-const startServer = async () => {
+// Initialize upload directories
+const initializeUploadDirs = () => {
+  const dirs = [
+    path.join(__dirname, 'uploads'),
+    path.join(__dirname, 'uploads/videos'),
+    path.join(__dirname, 'uploads/documents')
+  ];
+
+  dirs.forEach(dir => {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+      console.log(`Created directory: ${dir}`);
+    }
+  });
+};
+
+// Modify the startServer function
+const startServer = async (retryCount = 0) => {
   try {
-    // Connect to MongoDB
-    await connectDB();
+    // Initialize upload directories
+    initializeUploadDirs();
+    
+    // Connect to MongoDB with retry logic
+    try {
+      await connectDB();
+    } catch (dbError) {
+      if (retryCount < MAX_RETRIES) {
+        console.log(`Retrying database connection in ${RETRY_INTERVAL/1000} seconds... (Attempt ${retryCount + 1}/${MAX_RETRIES})`);
+        await new Promise(resolve => setTimeout(resolve, RETRY_INTERVAL));
+        return startServer(retryCount + 1);
+      }
+      throw dbError;
+    }
     
     // Seed initial courses
     await seedInitialCourses();
@@ -175,31 +200,14 @@ const startServer = async () => {
   }
 };
 
-// Handle MongoDB connection errors
-mongoose.connection.on('error', (err) => {
-  console.error('MongoDB connection error:', err);
-});
-
-mongoose.connection.on('disconnected', () => {
-  console.log('MongoDB disconnected');
-});
-
-mongoose.connection.on('connected', () => {
-  console.log('MongoDB connected');
-});
-
-mongoose.connection.on('reconnected', () => {
-  console.log('MongoDB reconnected');
-});
-
-// Handle application termination
+// Add graceful shutdown
 process.on('SIGINT', async () => {
   try {
     await mongoose.connection.close();
     console.log('MongoDB connection closed through app termination');
     process.exit(0);
   } catch (err) {
-    console.error('Error closing MongoDB connection:', err);
+    console.error('Error during graceful shutdown:', err);
     process.exit(1);
   }
 });

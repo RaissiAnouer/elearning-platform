@@ -4,6 +4,8 @@ export const authAPI = {
   login: async (email: string, password: string) => {
     try {
       const response = await client.post('/auth/login', { email, password });
+      const { token } = response.data;
+      localStorage.setItem('token', token);
       return response.data;
     } catch (error: any) {
       console.error('API Error:', error.response?.data || error);

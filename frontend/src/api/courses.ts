@@ -1,24 +1,20 @@
 import client from './client';
 import axios from 'axios';
-import { axiosInstance } from './client';
+import type { ProgressEvent } from 'axios';
 import { Course } from '../types/course';
-import { AxiosResponse } from 'axios';
 
-const axiosInstance = axios.create({
-  baseURL: 'http://localhost:5000/api',
-  headers: {
-    'Authorization': `Bearer ${localStorage.getItem('token')}`
-  }
-});
+const API_URL = 'http://localhost:5000/api';
 
 export const coursesAPI = {
   getAllCourses: async () => {
     try {
-      const response = await client.get('/courses');
+      console.log('Fetching all courses...');
+      const response = await client.get<Course[]>('/courses');
+      console.log('Courses fetched:', response.data);
       return response.data;
     } catch (error: any) {
-      console.error('API Error:', error.response?.data || error);
-      throw error;
+      console.error('Error fetching courses:', error);
+      throw new Error(error.response?.data?.message || 'Failed to fetch courses');
     }
   },
 
@@ -86,7 +82,66 @@ export const coursesAPI = {
     return response.json();
   },
 
-  getCourse: async (id: string): Promise<AxiosResponse<Course>> => {
-    return axiosInstance.get(`/courses/${id}`);
+  getCourse: async (id: string) => {
+    try {
+      console.log('Fetching course:', id);
+      const response = await client.get<Course>(`/courses/${id}`);
+      console.log('Course fetched:', response.data);
+      return response;
+    } catch (error: any) {
+      console.error('Error fetching course:', error);
+      throw new Error(error.response?.data?.message || 'Failed to fetch course details');
+    }
+  },
+
+  uploadVideo: async (formData: FormData, onProgress?: (progress: number) => void) => {
+    try {
+      const response = await client.post(
+        `/courses/${formData.get('courseId')}/videos`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          onUploadProgress: (progressEvent: ProgressEvent) => {
+            if (progressEvent.total) {
+              const progress = Math.round(
+                (progressEvent.loaded * 100) / progressEvent.total
+              );
+              onProgress?.(progress);
+            }
+          }
+        }
+      );
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  uploadDocument: async (formData: FormData, onProgress?: (progress: number) => void) => {
+    try {
+      const response = await client.post(
+        `/courses/${formData.get('courseId')}/documents`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          onUploadProgress: (progressEvent: any) => {
+            if (progressEvent.total) {
+              const progress = Math.round(
+                (progressEvent.loaded * 100) / progressEvent.total
+              );
+              onProgress?.(progress);
+            }
+          }
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error uploading document:', error);
+      throw error;
+    }
   },
 }; 

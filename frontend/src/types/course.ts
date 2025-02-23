@@ -1,5 +1,25 @@
+export interface Document {
+  _id: string;
+  title: string;
+  url: string;
+  type: string;
+  size: string;
+  createdAt: string;
+  description?: string;
+  category?: string;
+}
+
+export interface Video {
+  _id: string;
+  title: string;
+  url: string;
+  duration: string;
+  createdAt: string;
+  description?: string;
+}
+
 export interface Course {
-  _id?: string;
+  _id: string;
   id: string;
   title: string;
   description: string;
@@ -7,28 +27,18 @@ export interface Course {
   level: 'Beginner' | 'Intermediate' | 'Advanced' | 'All Levels';
   students: number;
   rating: number;
-  instructor?: string;
-  duration?: number;
+  instructor: string;
+  duration: number;
   price: number;
   category: string;
   enrolledCount: number;
   whatYouWillLearn?: string[];
   requirements?: string[];
   targetAudience?: string[];
-  videos?: {
-    id: string;
-    title: string;
-    duration: number;
-    url: string;
-  }[];
-  documents?: {
-    id: string;
-    title: string;
-    type: string;
-    size: string;
-    url: string;
-  }[];
+  videos: Video[];
+  documents: Document[];
   image?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+  status: 'draft' | 'published';
 } 

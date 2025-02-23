@@ -14,24 +14,14 @@ const authMiddleware = async (req, res, next) => {
     const token = authHeader.split(' ')[1];
     console.log('Token found:', token ? 'Yes' : 'No');
     
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      
-      // Fetch full user data from database
-      const user = await User.findById(decoded.id).select('-password');
-      if (!user) {
-        return res.status(401).json({ message: 'User not found' });
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+      if (err) {
+        console.error('JWT verification error:', err);
+        return res.status(403).json({ message: 'Invalid token' });
       }
-      
-      req.user = user; // Use full user object instead of just decoded token data
+      req.user = user;
       next();
-    } catch (jwtError) {
-      console.error('JWT verification error:', jwtError);
-      return res.status(401).json({ 
-        message: 'Invalid or expired token',
-        details: jwtError.message 
-      });
-    }
+    });
   } catch (error) {
     console.error('Auth middleware error:', error);
     return res.status(500).json({ 

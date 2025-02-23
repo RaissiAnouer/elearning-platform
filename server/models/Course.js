@@ -10,6 +10,66 @@ const lessonSchema = new mongoose.Schema({
   resources: [String]
 });
 
+const documentSchema = new mongoose.Schema({
+  _id: {
+    type: mongoose.Schema.Types.ObjectId,
+    default: () => new mongoose.Types.ObjectId()
+  },
+  title: {
+    type: String,
+    required: true
+  },
+  url: {
+    type: String,
+    required: true
+  },
+  type: {
+    type: String,
+    required: true
+  },
+  size: {
+    type: String,
+    required: true
+  },
+  description: String,
+  category: {
+    type: String,
+    default: 'Uncategorized'
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now
+  }
+});
+
+const videoSchema = new mongoose.Schema({
+  _id: {
+    type: mongoose.Schema.Types.ObjectId,
+    default: () => new mongoose.Types.ObjectId()
+  },
+  title: {
+    type: String,
+    required: true
+  },
+  url: {
+    type: String,
+    required: true
+  },
+  duration: {
+    type: String,
+    required: true
+  },
+  description: String,
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+});
+
 const courseSchema = new mongoose.Schema({
   id: {
     type: String,
@@ -42,33 +102,11 @@ const courseSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  level: {
-    type: String,
-    enum: ['Beginner', 'Intermediate', 'Advanced', 'All Levels'],
-    default: 'All Levels',
-    get: function(level) {
-      const translations = {
-        'Beginner': 'Débutant',
-        'Intermediate': 'Intermédiaire',
-        'Advanced': 'Avancé',
-        'All Levels': 'Tous Niveaux'
-      };
-      return translations[level] || level;
-    }
-  },
   price: {
     type: Number,
     required: true
   },
-  rating: {
-    type: Number,
-    default: 0
-  },
   enrolledCount: {
-    type: Number,
-    default: 0
-  },
-  students: {
     type: Number,
     default: 0
   },
@@ -89,7 +127,9 @@ const courseSchema = new mongoose.Schema({
   updatedAt: {
     type: Date,
     default: Date.now
-  }
+  },
+  videos: [videoSchema],
+  documents: [documentSchema]
 });
 
 // Pre-save middleware to generate ID if not provided

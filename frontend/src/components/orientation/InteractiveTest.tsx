@@ -1,216 +1,113 @@
 import React, { useState } from 'react';
-import { CheckCircleIcon } from '@heroicons/react/24/solid';
+import { useNavigate } from 'react-router-dom';
 
-interface Question {
-  id: number;
-  text: string;
-  options: string[];
-  category: string;
-}
+const InteractiveTest: React.FC = () => {
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const navigate = useNavigate();
+  
+  // Assuming you have some way to check if user is authenticated
+  const isAuthenticated = localStorage.getItem('token') !== null; // Replace with your auth check
 
-const questions: Question[] = [
-  {
-    id: 1,
-    text: "Which of these is the most secure password?",
-    options: ["password123", "P@ssw0rd2023!", "mybirthday", "qwerty"],
-    category: "Security"
-  },
-  {
-    id: 2,
-    text: "What is the primary purpose of a firewall?",
-    options: ["Monitor network traffic", "Speed up internet", "Store data", "Play games"],
-    category: "Security"
-  },
-  {
-    id: 3,
-    text: "Which file format is commonly used for spreadsheets?",
-    options: [".xlsx", ".txt", ".jpg", ".mp3"],
-    category: "Office Tools"
-  },
-  {
-    id: 4,
-    text: "What does 'CC' mean in email?",
-    options: ["Carbon Copy", "Computer Copy", "Content Copy", "Custom Contact"],
-    category: "Communication"
-  },
-  {
-    id: 5,
-    text: "Which cloud storage service is provided by Google?",
-    options: ["Google Drive", "iCloud", "Dropbox", "OneDrive"],
-    category: "Cloud Computing"
-  },
-  {
-    id: 6,
-    text: "What is phishing?",
-    options: ["A cyber attack to steal personal information", "A computer virus", "A networking protocol", "A backup method"],
-    category: "Security"
-  },
-  {
-    id: 7,
-    text: "Which keyboard shortcut is used to copy?",
-    options: ["Ctrl+C", "Ctrl+V", "Ctrl+X", "Ctrl+Z"],
-    category: "Basic Skills"
-  },
-  {
-    id: 8,
-    text: "What type of file has a .pdf extension?",
-    options: ["Document", "Image", "Video", "Audio"],
-    category: "File Management"
-  },
-  {
-    id: 9,
-    text: "What is a URL?",
-    options: ["Web address", "Email address", "IP address", "MAC address"],
-    category: "Internet"
-  },
-  {
-    id: 10,
-    text: "Which of these is a web browser?",
-    options: ["Chrome", "Excel", "Photoshop", "Spotify"],
-    category: "Internet"
-  },
-  {
-    id: 11,
-    text: "What does WiFi stand for?",
-    options: ["Wireless Fidelity", "Wide Fiber", "Web Filter", "Wireless File"],
-    category: "Networking"
-  },
-  {
-    id: 12,
-    text: "Which social media platform uses a bird logo?",
-    options: ["Twitter", "Facebook", "Instagram", "LinkedIn"],
-    category: "Social Media"
-  },
-  {
-    id: 13,
-    text: "What is the main function of an antivirus program?",
-    options: ["Protect from malware", "Edit photos", "Send emails", "Create documents"],
-    category: "Security"
-  },
-  {
-    id: 14,
-    text: "Which file format is used for compressed files?",
-    options: [".zip", ".doc", ".png", ".wav"],
-    category: "File Management"
-  },
-  {
-    id: 15,
-    text: "What does HTML stand for?",
-    options: ["HyperText Markup Language", "High Tech Modern Language", "Home Tool Markup Language", "Hyper Text Making Links"],
-    category: "Web"
-  },
-  {
-    id: 16,
-    text: "Which of these is a search engine?",
-    options: ["Google", "Windows", "Office", "Outlook"],
-    category: "Internet"
-  },
-  {
-    id: 17,
-    text: "What is the purpose of a USB port?",
-    options: ["Connect devices", "Print documents", "Send emails", "Browse internet"],
-    category: "Hardware"
-  },
-  {
-    id: 18,
-    text: "Which file extension is typically used for image files?",
-    options: [".jpg", ".doc", ".mp3", ".exe"],
-    category: "File Management"
-  },
-  {
-    id: 19,
-    text: "What is a cookie in web browsing context?",
-    options: ["Data stored by websites", "Computer virus", "Email attachment", "Video file"],
-    category: "Internet"
-  },
-  {
-    id: 20,
-    text: "Which of these is a valid email address format?",
-    options: ["user@domain.com", "user.domain.com", "www.user@domain", "http://user.com"],
-    category: "Communication"
-  }
-];
-
-const InteractiveTest = () => {
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState<{ [key: number]: number }>({});
-  const [isCompleted, setIsCompleted] = useState(false);
-
-  const handleAnswer = (questionId: number, optionIndex: number) => {
-    setAnswers(prev => ({ ...prev, [questionId]: optionIndex }));
-    
-    if (currentQuestion < questions.length - 1) {
-      setTimeout(() => {
-        setCurrentQuestion(prev => prev + 1);
-      }, 300);
-    } else {
-      setIsCompleted(true);
+  const handleStartTest = () => {
+    if (!isAuthenticated) {
+      setShowAuthModal(true);
+      return;
     }
+    window.open('https://framaforms.org/les-collegiens-et-lyceens-et-lintelligence-artificielle-1732377769', '_blank');
   };
 
-  const progress = ((currentQuestion + 1) / questions.length) * 100;
-
-  if (isCompleted) {
-    return (
-      <div className="text-center max-w-2xl mx-auto">
-        <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-100 mb-8">
-          <CheckCircleIcon className="h-12 w-12 text-green-600" />
-        </div>
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">
-          Test Complété !
-        </h2>
-        <p className="text-lg text-gray-600 mb-8">
-          Félicitations ! Nous avons analysé vos réponses et préparé des recommandations personnalisées pour votre orientation.
-        </p>
-        <div className="bg-blue-50 rounded-xl p-6 text-left">
-          <h3 className="text-xl font-semibold text-blue-900 mb-4">
-            Vos Domaines Recommandés
-          </h3>
-          {/* Add personalized recommendations based on answers */}
-        </div>
-      </div>
-    );
-  }
-
-  const question = questions[currentQuestion];
+  const handleNavigateToAuth = (type: 'login' | 'register') => {
+    navigate(`/auth/${type}`);
+  };
 
   return (
-    <div className="max-w-2xl mx-auto">
-      {/* Progress section */}
-      <div className="mb-8">
-        <div className="flex justify-between text-sm text-gray-600 mb-2">
-          <span>Question {currentQuestion + 1} sur {questions.length}</span>
-          <span>{Math.round(progress)}%</span>
+    <div className="w-full max-w-3xl mx-auto p-4">
+      <div className="bg-white rounded-lg shadow-lg p-6">
+        <div className="text-center mb-6">
+          <h2 className="text-2xl font-bold mb-2">
+            Intelligence Artificielle - Test Interactif
+          </h2>
+          <p className="text-gray-600">
+            Découvrez votre rapport avec l'IA à travers notre questionnaire détaillé
+          </p>
         </div>
-        <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-          <div 
-            className="h-2 bg-blue-600 rounded-full transition-all duration-300"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-      </div>
-
-      {/* Question section */}
-      <div className="mb-8">
-        <span className="text-sm font-medium text-blue-600 mb-2 block">
-          {question.category}
-        </span>
-        <h3 className="text-2xl font-semibold text-gray-900 mb-8">
-          {question.text}
-        </h3>
+        
         <div className="space-y-4">
-          {question.options.map((option, index) => (
-            <button
-              key={index}
-              onClick={() => handleAnswer(question.id, index)}
-              className="w-full text-left px-6 py-4 rounded-xl border-2 transition-all duration-200 
-                hover:border-blue-500 hover:bg-blue-50 focus:outline-none focus:ring-2 
-                focus:ring-blue-500 focus:ring-offset-2"
-            >
-              {option}
-            </button>
-          ))}
+          <div className="bg-gray-100 p-4 rounded-lg">
+            <h3 className="font-semibold mb-2">Pourquoi participer ?</h3>
+            <ul className="list-disc list-inside space-y-2">
+              <li>Évaluez votre compréhension de l'IA</li>
+              <li>Contribuez à une étude importante sur l'IA dans l'éducation</li>
+              <li>Recevez des insights personnalisés</li>
+              <li>Temps estimé : 10-15 minutes</li>
+            </ul>
+          </div>
+
+          <div className="text-sm text-gray-600">
+            <p>
+              Ce questionnaire fait partie d'une étude sur l'utilisation et la perception 
+              de l'intelligence artificielle par les étudiants. Vos réponses nous aideront 
+              à mieux comprendre et améliorer l'intégration de l'IA dans l'éducation.
+            </p>
+          </div>
         </div>
+
+        <div className="mt-6 flex justify-center">
+          <button 
+            onClick={handleStartTest}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg 
+                     flex items-center gap-2 transition-colors duration-200"
+          >
+            Commencer le Test
+            <svg 
+              className="w-4 h-4" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                strokeWidth={2} 
+                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" 
+              />
+            </svg>
+          </button>
+        </div>
+
+        {/* Auth Modal */}
+        {showAuthModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
+              <h3 className="text-xl font-bold mb-4">Authentification Requise</h3>
+              <p className="text-gray-600 mb-6">
+                Pour accéder aux détails et passer le test, veuillez vous connecter ou créer un compte.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <button
+                  onClick={() => handleNavigateToAuth('login')}
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
+                >
+                  Se Connecter
+                </button>
+                <button
+                  onClick={() => handleNavigateToAuth('register')}
+                  className="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors"
+                >
+                  Créer un Compte
+                </button>
+                <button
+                  onClick={() => setShowAuthModal(false)}
+                  className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
