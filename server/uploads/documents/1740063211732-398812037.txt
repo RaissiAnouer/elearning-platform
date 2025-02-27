@@ -1,0 +1,445 @@
+	1. Profound (عميق)
+Example:
+"His research had a profound impact on modern science."
+(كان لبحثه تأثير عميق على العلم الحديث.)
+
+2. Insights (رؤى/فهم عميق)
+Example:
+"The documentary offers insights into ancient civilizations."
+(يقدم الوثائقي رؤى عميقة عن الحضارات القديمة.)
+
+3. Defines (يُحدِّد)
+Example:
+"The Constitution defines citizens’ rights clearly."
+(يُحدِّد الدستور حقوق المواطنين بوضوح.)
+
+4. Apparent (واضح/ظاهري)
+Example:
+"The apparent simplicity of the design hides its complexity."
+(السهولة الظاهرية للتصميم تخفي تعقيده.)
+
+5. Desperately (بِيأس)
+Example:
+"He desperately searched for his lost keys."
+(بحث بِيأس عن مفاتيحه المفقودة.)
+
+6. Empowering (تَمْكِين)
+Example:
+"Education is an empowering tool for marginalized communities."
+(التعليم أداة تَمْكِين للمجتمعات المهمشة.)
+
+7. Blend (مَزِيج)
+Example:
+"The painting is a blend of traditional and modern styles."
+(اللوحة مَزِيج من الأساليب التقليدية والحديثة.)
+
+8. Guarantee (ضَمان)
+Example:
+"The company guarantees quick delivery of products."
+(الشركة تَضْمَن توصيل المنتجات بسرعة.)
+
+9. Compassion (تَعاطُف)
+Example:
+"She showed compassion to the injured animal."
+(أظهرت تَعاطُفًا تجاه الحيوان الجريح.)
+
+10. Practical (عَمَلي)
+Example:
+"His practical approach solved the problem efficiently."
+(حَلَّت طريقته العَمَلية المشكلة بكفاءة.)
+
+11. Review (مُراجعة)
+Example:
+"Please review the report before submitting it."
+(يرجى مُراجعة التقرير قبل تقديمه.)
+
+12. Plagiarism (انتحال)
+Example:
+"Plagiarism in academic work leads to severe penalties."
+(يؤدي الانتحال في الأعمال الأكاديمية لعقوبات شديدة.)
+
+13. Regarding (بِشأن)
+Example:
+"Regarding your inquiry, we’ll respond soon."
+(بِشأن استفسارك، سنرد قريبًا.)
+
+14. Conduct (سُلوك)
+Example:
+"Professional conduct is essential in the workplace."
+(السُلوك المهني ضروري في مكان العمل.)
+
+15. Executives (مدراء تنفيذيون)
+Example:
+"Company executives approved the new strategy."
+(وافق المدراء التنفيذيون على الاستراتيجية الجديدة.)
+
+16. Aspect (جَانِب)
+Example:
+"Every aspect of the project was analyzed."
+(تم تحليل كل جَانِب من المشروع.)
+
+17. Performed (أدَّى)
+Example:
+"The surgeon performed the operation successfully."
+(أدَّى الجراح العملية بنجاح.)
+
+18. Rehearsed (تَدَرَّبَ)
+Example:
+"The actors rehearsed the play for weeks."
+(تَدَرَّبَ الممثلون على المسرحية لأسابيع.)
+
+19. Stimulate (حَفَّزَ)
+Example:
+"Coffee stimulates the brain in the morning."
+(القهوة تُحَفِّز الدماغ صباحًا.)
+
+20. Provoke (اسْتَفَزَّ)
+Example:
+"His rude comment provoked her anger."
+(اسْتَفَزَّ تعليقه الوقح غضبها.)
+
+21. I keep referring (أستمر في الرجوع)
+Example:
+"I keep referring to this book for inspiration."
+(أستمر في الرجوع إلى هذا الكتاب للإلهام.)
+
+22. Convince (أقنَعَ)
+Example:
+"He convinced his parents to let him travel."
+(أقنَعَ والديه بالسماح له بالسفر.)
+
+23. Equivalent (مُكافئ)
+Example:
+"One dollar is equivalent to 3.75 Saudi Riyals."
+(الدولار الواحد مُكافئ لـ 3.75 ريال سعودي.)
+
+24. Literature (أدَب)
+Example:
+"She studies Arabic literature at university."
+(تدرس الأدَب العربي في الجامعة.)
+
+25. Durable (مُتِين)
+Example:
+"This durable fabric lasts for years."
+(هذا القماش المُتِين يدوم لسنوات.)
+
+26. Neither (لا... ولا...)
+Example:
+"Neither tea nor coffee appeals to me."
+(لا الشاي ولا القهوة يعجباني.)
+
+27. Sparing us (وفر علينا)
+Example:
+"Thank you for sparing us unnecessary details."
+(شكرًا لـوفرت علينا التفاصيل غير الضرورية.)
+
+28. Treated (عَامَلَ)
+Example:
+"She treated her guests with kindness."
+(عَامَلَت ضيوفها بلطف.)
+
+29. Optimist (مُتفائل)
+Example:
+"An optimist sees opportunities in every difficulty."
+(يرى المُتفائل الفرص في كل صعوبة.)
+
+30. Pessimist (مُتشائم)
+Example:
+"A pessimist expects the worst outcome."
+(يتوقع المُتشائم الأسوأ دائمًا.)
+
+31. Within (دَاخِل)
+Example:
+"Keep the discussion within the team."
+(أبقِ النقاش دَاخِل الفريق.)
+
+32. Encapsulated (جَسَّدَ/لَخَّصَ)
+Example:
+"The poem encapsulated the spirit of the era."
+(جَسَّدَت القصيدة روح العصر.)
+
+33. Contribute (ساهم)
+Example:
+"Everyone contributed to the charity event."
+(ساهم الجميع في الفعالية الخيرية.)
+
+34. Permanent (دَائِم)
+Example:
+"The job offers a permanent contract."
+(توفر الوظيفة عقدًا دَائِمًا.)
+
+35. Dealing (تَعامُل)
+Example:
+"Dealing with stress requires patience."
+(يَتطلب التَعامُل مع التوتر صبرًا.)
+
+36. Undoubtedly (بِلا شَكٍّ)
+Example:
+"He is undoubtedly the best candidate."
+(هو بِلا شَكٍّ المرشح الأفضل.)
+
+37. Valuable (قَيِّم)
+Example:
+"Time is a valuable resource."
+(الوقت مورد قَيِّم.)
+
+38. Synthesize (دَمَجَ)
+Example:
+"Scientists synthesize data to draw conclusions."
+(يدمج العلماء البيانات لاستخلاص النتائج.)
+
+39. Blueprint (مَخطَط)
+Example:
+"The blueprint outlines the building’s design."
+(يُوضح المَخطَط تصميم المبنى.)
+
+40. Increase (زِيادة)
+Example:
+"Exercise can increase energy levels."
+(يمكن للتمارين أن تَزيد مستويات الطاقة.)
+
+41. Enhance (عَزَّزَ)
+Example:
+"Reading enhances your vocabulary."
+(القراءة تُعَزِّز مفرداتك.)
+
+42. Ethic (أخلاقيات)
+Example:
+"Work ethic is crucial for success."
+(أخلاقيات العمل ضرورية للنجاح.)
+
+43. Fulfillment (إشباع)
+Example:
+"Helping others brings fulfillment."
+(مساعدة الآخرين تُحقق إشباعًا.)
+
+44. Seeking (بَحث عن)
+Example:
+"She is seeking a new job opportunity."
+(هي تبحث عن فرصة عمل جديدة.)
+
+45. Penetrating (اختراقي/ثاقب)
+Example:
+"His penetrating analysis revealed hidden flaws."
+(كشف تحليله الثاقب عيوبًا خفية.)
+
+46. Usually (عادةً)
+Example:
+"I usually wake up at 6 AM."
+(أستيقظ عادةً الساعة السادسة صباحًا.)
+
+47. Fiction (خيال)
+Example:
+"He writes science fiction novels."
+(يكتب روايات خيال علمي.)
+
+48. Integrity (نزاهة)
+Example:
+"Leaders must act with integrity."
+(يجب على القادة التصرف بنزاهة.)
+
+49. Involves (يَشْمَل)
+Example:
+"The job involves frequent travel."
+(الوظيفة تَشْمَل سفرًا متكررًا.)
+
+50. Beyond (وراء)
+Example:
+"His talent goes beyond expectations."
+(موهبته تتجاوز ما وراء التوقعات.)
+
+51. Conflict (صراع)
+Example:
+"The conflict between the two countries ended peacefully."
+(انتهى الصراع بين البلدين سلميًا.)
+
+52. Restore (استعادة)
+Example:
+"They worked to restore the ancient temple."
+(عملوا على استعادة المعبد القديم.)
+
+53. Deliberate (مُتعمَّد)
+Example:
+"The insult was deliberate."
+(كانت الإهانة مُتعمَّدة.)
+
+54. Behaviour (سُلوك)
+Example:
+"Good behaviour is rewarded in school."
+(يُكافأ السُلوك الجيد في المدرسة.)
+
+55. Outward (ظاهري)
+Example:
+"His outward confidence hides his shyness."
+(ثقتُه الظاهرية تخفي خجله.)
+
+56. Suspect (مُشتبَه به)
+Example:
+"The police arrested the suspect."
+(قبضت الشرطة على المُشتبَه به.)
+
+57. Expanded (تَمَّ توسيعه)
+Example:
+"The company expanded its operations globally."
+(تَمَّ توسيع عمليات الشركة عالميًا.)
+
+58. I had felt (شعرتُ)
+Example:
+"I had felt anxious before the exam."
+(شعرتُ بالقلق قبل الامتحان.)
+
+59. Impostor (مُحتال)
+Example:
+"He felt like an impostor among experts."
+(شعر بأنه مُحتال بين الخبراء.)
+
+60. Discovers (يَكتشف)
+Example:
+"She discovers new species in the jungle."
+(تكتشف أنواعًا جديدة في الغابة.)
+
+61. Explore (استكشاف)
+Example:
+"Let’s explore the city’s hidden gems."
+(لنستكشف كنوز المدينة المخفية.)
+
+62. Alongside (بِجانب)
+Example:
+"He worked alongside famous scientists."
+(عمل بِجانب علماء مشهورين.)
+
+63. Rather (بدلاً من)
+Example:
+"I’d rather read than watch TV."
+(أفضل بدلاً من مشاهدة التلفاز أن أقرأ.)
+
+64. Enroll (تسجيل)
+Example:
+"She enrolled in a programming course."
+(سجلت في دورة برمجة.)
+
+65. Amount (كمية)
+Example:
+"A small amount of salt is enough."
+(كمية صغيرة من الملح كافية.)
+
+66. Rely (يعتمد على)
+Example:
+"You can rely on me for help."
+(يمكنك الاعتماد عليّ للمساعدة.)
+
+67. Perform (أداء)
+Example:
+"The team performed exceptionally."
+(أدى الفريق أداءً استثنائيًا.)
+
+68. Field (مَجال)
+Example:
+"He works in the field of artificial intelligence."
+(يعمل في مَجال الذكاء الاصطناعي.)
+
+69. Pick up (التقاط/التعلم)
+Example:
+"Can you pick up some groceries?"
+(هل يمكنك التقاط بعض المشتريات؟)
+"She picked up Spanish quickly."
+(تعلمت الإسبانية بسرعة.)
+
+70. Neuroscience (عِلم الأعصاب)
+Example:
+"Neuroscience studies brain functions."
+(يدرس عِلم الأعصاب وظائف الدماغ.)
+
+71. Synthesis (تَركِيب)
+Example:
+"The synthesis of art and technology is fascinating."
+(تَركِيب الفن والتكنولوجيا مدهش.)
+
+72. Figured out (اكتشف/حَلَّ)
+Example:
+"He figured out the puzzle in minutes."
+(حَلَّ اللغز في دقائق.)
+
+73. Compelling (مُقنِع/جذاب)
+Example:
+"The movie has a compelling storyline."
+(الفيلم لديه حبكة جذابة.)
+
+74. Contribution (مُساهمة)
+Example:
+"Einstein’s contributions to physics are immense."
+(مُساهمات آينشتاين في الفيزياء هائلة.)
+
+75. Foolish (أحمق)
+Example:
+"It’s foolish to ignore expert advice."
+(من الحماقة تجاهل نصيحة الخبراء.)
+
+76. Assume (افتراض)
+Example:
+"Don’t assume everyone agrees with you."
+(لا تفترض أن الجميع يوافقونك.)
+
+77. Credit (فَضْل/اِئتِمَان)
+Example:
+"She deserves credit for the project’s success."
+(تستحق الفَضْل في نجاح المشروع.)
+
+78. Preceded (سبق)
+Example:
+"A speech preceded the ceremony."
+(سبقَ الحفلَ خطاب.)
+
+79. Backbone (عَمُود فَقْري)
+Example:
+"Teachers are the backbone of education."
+(المعلمون عَمُود الفَقْري للتعليم.)
+
+80. Cue (إشارة)
+Example:
+"The actor missed his cue to enter."
+(فات الممثل إشارة دخوله.)
+
+81. Craving (اشتهاء)
+Example:
+"I have a craving for chocolate."
+(أشعر باشتهاء الشوكولاتة.)
+
+82. Response (رد فعل)
+Example:
+"Her quick response saved the situation."
+(رد فعلها السريع أنقذ الموقف.)
+
+83. Reward (مكافأة)
+Example:
+"Hard work deserves a reward."
+(العمل الجاد يستحق مكافأة.)
+
+84. Evolve (تَطَوَّرَ)
+Example:
+"Technology evolves rapidly."
+(التكنولوجيا تَتَطَوَّر بسرعة.)
+
+85. Recognize (تَعَرَّفَ على)
+Example:
+"I barely recognized him after years."
+(بالكاد تعرفت عليه بعد سنوات.)
+
+86. Punishment (عِقاب)
+Example:
+"Harsh punishment is not always effective."
+(العِقاب الشديد ليس فعالًا دائمًا.)
+
+
+
+
+
+
+lack(ed) = 
+
+decades / contracts = 
+
+
+
+
+sharp and lean = الحادة والبسيطة 
