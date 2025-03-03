@@ -27,11 +27,11 @@ const Footer = () => {
                   Orientation
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to="/courses" className="text-gray-300 hover:text-white text-sm">
                   Courses
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
 

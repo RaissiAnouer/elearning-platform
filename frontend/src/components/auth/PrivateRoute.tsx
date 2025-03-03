@@ -1,26 +1,26 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 
 interface PrivateRouteProps {
   children: React.ReactNode;
-  allowedRoles?: string[];
+  requiredRole?: 'student' | 'teacher' | 'admin';
 }
 
-const PrivateRoute: React.FC<PrivateRouteProps> = ({ children, allowedRoles = [] }) => {
+const PrivateRoute: React.FC<PrivateRouteProps> = ({ children, requiredRole }) => {
   const { user } = useAuth();
+  const location = useLocation();
 
   if (!user) {
-    // Not logged in, redirect to login page
-    return <Navigate to="/login" replace />;
+    // Redirect to login if not authenticated
+    return <Navigate to="/login" state={{ from: location.pathname }} replace />;
   }
 
-  if (allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
-    // User's role is not authorized, redirect to home page
+  if (requiredRole && user.role !== requiredRole) {
+    // Redirect to home if user doesn't have required role
     return <Navigate to="/" replace />;
   }
 
-  // Authorized, render children
   return <>{children}</>;
 };
 

@@ -1,37 +1,34 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-
 const router = express.Router();
+const User = require('../models/User');
+const authMiddleware = require('../middleware/auth');
 
-// Register
-router.post('/register', async (req, res) => {
+// Get user profile
+router.get('/profile', authMiddleware, async (req, res) => {
   try {
-    const { username, password, email, role, grade } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ username, password: hashedPassword, email, role, grade });
-    await user.save();
-    res.status(201).json({ message: 'User registered successfully' });
-  } catch (error) {
-    res.status(400).json({ error: 'Error registering user' });
-  }
-});
-
-// Login
-router.post('/login', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
-    if (user && await bcrypt.compare(password, user.password)) {
-      const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET);
-      res.json({ token, message: 'Login successful' });
-    } else {
-      res.status(401).json({ error: 'Invalid credentials' });
+    const user = await User.findById(req.user.id).select('-password');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
+    res.json(user);
   } catch (error) {
-    res.status(400).json({ error: 'Error logging in' });
+    res.status(500).json({ message: error.message });
   }
 });
 
-module.exports = router;
+// Update user profile
+router.put('/profile', authMiddleware, async (req, res) => {
+  try {
+    const { name, email, phone } = req.body;
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      { name, email, phone },
+      { new: true }
+    ).select('-password');
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+module.exports = router; 

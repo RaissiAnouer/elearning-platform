@@ -55,14 +55,6 @@ const Banner = () => {
                 Commencer maintenant
                 <ArrowRightIcon className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Link>
-              <Link
-                to="/courses"
-                className="inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-xl
-                  text-white border-2 border-white/20 hover:bg-white/10 backdrop-blur-sm transition-all duration-200"
-              >
-                <AcademicCapIcon className="h-5 w-5 mr-2" />
-                Découvrir nos formations
-              </Link>
             </div>
           </div>
 

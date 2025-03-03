@@ -1,14 +1,38 @@
-import client from './client';
+import api from './config';
+import axios from 'axios';
+
+interface LoginResponse {
+  token: string;
+  user: {
+    id: string;
+    email: string;
+    name: string;
+    role: string;
+  };
+}
 
 export const authAPI = {
   login: async (email: string, password: string) => {
     try {
-      const response = await client.post('/auth/login', { email, password });
-      const { token } = response.data;
-      localStorage.setItem('token', token);
+      const response = await api.post<LoginResponse>('/auth/login', {
+        email,
+        password,
+      });
+      console.log('Login response:', response.data); // Debug log
+      localStorage.setItem('token', response.data.token);
       return response.data;
     } catch (error: any) {
-      console.error('API Error:', error.response?.data || error);
+      console.error('Login error:', error.response?.data || error.message);
+      throw error;
+    }
+  },
+
+  register: async (userData: { name: string; email: string; password: string; role: string }) => {
+    try {
+      const response = await api.post('/auth/register', userData);
+      return response.data;
+    } catch (error: any) {
+      console.error('Registration error:', error.response?.data || error.message);
       throw error;
     }
   },
@@ -23,7 +47,7 @@ export const authAPI = {
     grade?: string;
   }) => {
     try {
-      const response = await client.post('/auth/signup', userData);
+      const response = await api.post('/auth/signup', userData);
       
       // Store token
       if (response.data.token) {
@@ -47,7 +71,7 @@ export const authAPI = {
 
   verifyToken: async (token: string) => {
     try {
-      const response = await client.post('/auth/verify', { token });
+      const response = await api.post('/auth/verify', { token });
       return response.data;
     } catch (error: any) {
       console.error('API Error:', error.response?.data || error);
@@ -64,7 +88,7 @@ export const authAPI = {
     try {
       console.log('Making update profile request with data:', userData);
       
-      const response = await client.put('/auth/profile', userData);
+      const response = await api.put('/auth/profile', userData);
       console.log('Update profile response:', response.data);
 
       if (!response.data || !response.data.user || !response.data.token) {
@@ -83,19 +107,9 @@ export const authAPI = {
     }
   },
 
-  createCourse: async (courseData: {
-    id: string;
-    title: string;
-    description: string;
-    duration: string;
-    category: string;
-    level: string;
-    price: number;
-    image: string;
-    instructor: string;
-  }) => {
+  createCourse: async (courseData: FormData) => {
     try {
-      const response = await client.post('/courses', courseData);
+      const response = await api.post('/courses/add', courseData);
       return response.data;
     } catch (error: any) {
       console.error('Course creation error:', error);

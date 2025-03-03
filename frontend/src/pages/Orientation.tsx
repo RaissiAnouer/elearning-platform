@@ -3,7 +3,6 @@ import {
   AcademicCapIcon,
   CalculatorIcon,
   ClipboardDocumentCheckIcon,
-  ArrowLeftIcon
 } from '@heroicons/react/24/outline';
 import UniversityGuide from '../components/orientation/UniversityGuide';
 import ScoreCalculator from '../components/orientation/ScoreCalculator';

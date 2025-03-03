@@ -34,7 +34,7 @@ const Header = () => {
   const navigation = [
     { name: 'Accueil', href: '/' },
     { name: 'Orientation', href: '/orientation' },
-    { name: 'Cours', href: '/courses' },
+    { name: 'Formation', href: '/formation' },
     { name: 'À propos', href: '/about' },
     { name: 'Contact', href: '/contact' },
   ];

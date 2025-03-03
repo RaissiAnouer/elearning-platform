@@ -3,49 +3,32 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    trim: true
+    required: true
   },
   email: {
     type: String,
-    required: [true, 'Email is required'],
-    unique: true,
-    trim: true,
-    lowercase: true,
-    match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email']
+    required: true,
+    unique: true
   },
   password: {
     type: String,
-    required: [true, 'Password is required']
+    required: true
   },
   username: {
     type: String,
-    required: [true, 'Username is required'],
-    unique: true,
-    trim: true,
-    minlength: [3, 'Username must be at least 3 characters long']
+    required: true,
+    unique: true
   },
   phone: {
     type: String,
-    required: [true, 'Phone number is required'],
-    trim: true
+    required: true
   },
   role: {
     type: String,
-    required: [true, 'Role is required'],
-    enum: {
-      values: ['student', 'teacher', 'admin'],
-      message: 'Role must be either student, teacher, or admin'
-    },
+    enum: ['student', 'teacher', 'admin'],
     default: 'student'
   },
-  grade: {
-    type: String,
-    trim: true
-  },
-  enrolledCourses: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Course'
-  }],
+  grade: String,
   createdAt: {
     type: Date,
     default: Date.now

@@ -51,17 +51,8 @@ client.interceptors.response.use(
       return Promise.reject(new Error('Request timed out'));
     }
 
-    // Handle specific status codes
-    switch (error.response.status) {
-      case 404:
-        toast.error('Resource not found');
-        break;
-      case 500:
-        toast.error('Server error. Please try again later.');
-        break;
-      default:
-        toast.error(error.response.data.message || 'An error occurred');
-    }
+    // Remove specific status code handling since it's not providing much value
+    toast.error(error.response.data.message || 'An error occurred');
 
     return Promise.reject(error);
   }

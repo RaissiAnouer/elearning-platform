@@ -3,7 +3,6 @@ import { Dialog } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import FileDropzone from './shared/FileDropzone';
 import { toast } from 'react-hot-toast';
-import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DocumentIcon } from '@heroicons/react/24/outline';
 

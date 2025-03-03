@@ -4,13 +4,7 @@ import {
   AcademicCapIcon,
   UserGroupIcon,
   LightBulbIcon,
-  RocketLaunchIcon,
-  ClipboardDocumentCheckIcon,
-  ArrowRightIcon,
-  BookOpenIcon,
-  ClockIcon,
-  DevicePhoneMobileIcon,
-  GlobeAltIcon
+  ArrowRightIcon
 } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
 
@@ -29,23 +23,7 @@ const services = [
     color: 'green',
     link: '/coaching'
   },
-  {
-    icon: AcademicCapIcon,
-    title: 'Formations Adaptées',
-    description: 'Accédez à des cours de qualité conçus pour votre réussite',
-    color: 'blue',
-    link: '/courses'
-  }
 ];
-
-const colors = {
-  blue: 'bg-blue-500/10 text-blue-600 ring-blue-500/20',
-  yellow: 'bg-yellow-500/10 text-yellow-600 ring-yellow-500/20',
-  green: 'bg-green-500/10 text-green-600 ring-green-500/20',
-  purple: 'bg-purple-500/10 text-purple-600 ring-purple-500/20',
-  pink: 'bg-pink-500/10 text-pink-600 ring-pink-500/20',
-  indigo: 'bg-indigo-500/10 text-indigo-600 ring-indigo-500/20'
-};
 
 const Services = () => {
   return (

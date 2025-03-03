@@ -1,0 +1,1 @@
+import { Courses } from './pages/Courses'; 

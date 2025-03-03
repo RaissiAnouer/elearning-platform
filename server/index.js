@@ -5,11 +5,10 @@ const cors = require('cors');
 const path = require('path');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
-const courseRoutes = require('./routes/courses');
-const Course = require('./models/Course');
 const connectDB = require('./config/db');
 const multer = require('multer');
 const fs = require('fs');
+const courseRoutes = require('./routes/courses'); // Import the course routes
 
 // Verify the environment variable is loaded
 console.log('MONGO_URI:', process.env.MONGO_URI ? 'exists' : 'missing');
@@ -17,97 +16,20 @@ console.log('MONGO_URI:', process.env.MONGO_URI ? 'exists' : 'missing');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Initial courses data
-const initialCourses = [
-  {
-    id: "python-for-beginners",
-    title: "Python pour Débutants : De Zéro à Héros",
-    instructor: "Dr. Ahmed Ben Ali",
-    duration: 20,
-    enrolledCount: 2500,
-    image: "/images/courses/banners/python-basics.png",
-    price: 299.99,
-    description: "Découvrez les fondamentaux de Python, le langage de programmation le plus populaire. Maîtrisez la syntaxe de base, les structures de données et les concepts essentiels de la programmation.",
-    category: "Programming",
-    status: "published",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: "html-css-fundamentals",
-    title: "HTML & CSS : Les Fondamentaux du Web",
-    instructor: "Dr. Sarah Mansour",
-    duration: 25,
-    enrolledCount: 1800,
-    image: "/images/courses/banners/html-css.jpg",
-    price: 399.99,
-    description: "Maîtrisez les bases du développement web avec HTML et CSS. Créez des sites web modernes, responsifs et professionnels. Un parcours complet pour devenir développeur web.",
-    category: "Web Development",
-    status: "published",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  }
-];
-
 // Add at the top of the file
 const MAX_RETRIES = 5;
 const RETRY_INTERVAL = 5000; // 5 seconds
 
-// Function to seed initial courses
-const seedInitialCourses = async () => {
-  try {
-    console.log('Checking for initial courses...');
-    
-    for (const courseData of initialCourses) {
-      try {
-        // Ensure duration is a number
-        if (typeof courseData.duration === 'string') {
-          courseData.duration = parseInt(courseData.duration);
-        }
-
-        const existingCourse = await Course.findOne({ id: courseData.id });
-        if (!existingCourse) {
-          const course = await Course.create(courseData);
-          console.log(`Created course: ${course.title}`);
-        } else {
-          console.log(`Course already exists: ${courseData.title}`);
-        }
-      } catch (courseError) {
-        console.error(`Error creating course ${courseData.title}:`, courseError.message);
-        if (courseError.errors) {
-          Object.keys(courseError.errors).forEach(key => {
-            console.error(`- ${key}: ${courseError.errors[key].message}`);
-          });
-        }
-      }
-    }
-    
-    console.log('Initial courses check completed');
-  } catch (error) {
-    console.error('Error seeding initial courses:', error.message);
-  }
-};
-
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:3000'],
+  origin: ['http://localhost:3000'], // Adjust this to your frontend URL
   credentials: true
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Make Mongoose available to routes
-app.set('mongoose', mongoose);
-
 // Serve uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-// Debug middleware
-app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
-  console.log('Request Body:', req.body);
-  next();
-});
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -119,24 +41,8 @@ app.get('/health', (req, res) => {
 
 // Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/courses', courseRoutes);
 app.use('/api/users', userRoutes);
-
-// Add error handling for file uploads
-app.use((err, req, res, next) => {
-  if (err instanceof multer.MulterError) {
-    if (err.code === 'LIMIT_FILE_SIZE') {
-      return res.status(400).json({ 
-        message: 'File is too large. Maximum size is 500MB' 
-      });
-    }
-    return res.status(400).json({ 
-      message: 'File upload error', 
-      error: err.message 
-    });
-  }
-  next(err);
-});
+app.use('/api/courses', courseRoutes); // Register the course routes
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -178,7 +84,10 @@ const startServer = async (retryCount = 0) => {
     // Connect to MongoDB with retry logic
     try {
       await connectDB();
+      console.log('MongoDB connected successfully');
     } catch (dbError) {
+      console.error('MongoDB connection error:', dbError);
+      
       if (retryCount < MAX_RETRIES) {
         console.log(`Retrying database connection in ${RETRY_INTERVAL/1000} seconds... (Attempt ${retryCount + 1}/${MAX_RETRIES})`);
         await new Promise(resolve => setTimeout(resolve, RETRY_INTERVAL));
@@ -187,12 +96,9 @@ const startServer = async (retryCount = 0) => {
       throw dbError;
     }
     
-    // Seed initial courses
-    await seedInitialCourses();
-    
     // Start server
     app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
+      console.log(`Server is running on port ${PORT}`);
     });
   } catch (error) {
     console.error('Server startup error:', error);
@@ -210,6 +116,11 @@ process.on('SIGINT', async () => {
     console.error('Error during graceful shutdown:', err);
     process.exit(1);
   }
+});
+
+app.use((req, res, next) => {
+  console.log(`Incoming request: ${req.method} ${req.url}`);
+  next();
 });
 
 startServer(); 

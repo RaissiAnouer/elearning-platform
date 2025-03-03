@@ -42,7 +42,6 @@ router.post('/signup', async (req, res) => {
       phone: phone.trim(),
       role: role.toLowerCase(),
       grade: grade?.trim(),
-      enrolledCourses: [],
       createdAt: new Date()
     });
 
@@ -74,7 +73,6 @@ router.post('/signup', async (req, res) => {
         role: newUser.role,
         grade: newUser.grade,
         createdAt: newUser.createdAt,
-        enrolledCourses: []
       }
     });
 
@@ -92,60 +90,56 @@ router.post('/signup', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log('Login attempt for:', email);
 
-    // Find user by email
-    const user = await User.findOne({ email: email.toLowerCase() });
-    if (!user) {
+    // Validate input
+    if (!email || !password) {
       return res.status(400).json({
-        message: 'Invalid email or password'
+        status: 'error',
+        message: 'Please provide both email and password'
       });
     }
 
-    // Check password
+    // Find user
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({
+        status: 'error',
+        message: 'Invalid credentials'
+      });
+    }
+
+    // Verify password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({
-        message: 'Invalid email or password'
+      return res.status(401).json({
+        status: 'error',
+        message: 'Invalid credentials'
       });
     }
 
-    // Generate token
+    // Create token
     const token = jwt.sign(
       { id: user._id, role: user.role, email: user.email },
       process.env.JWT_SECRET,
-      { expiresIn: '1h' }
+      { expiresIn: '24h' }
     );
 
-    // Log the user object to verify phone is present
-    console.log('User found:', {
-      id: user._id,
-      name: user.name,
-      email: user.email,
-      phone: user.phone, // Check if this exists
-      username: user.username,
-      role: user.role
-    });
-
-    // Send response with all user fields
+    // Send response
     res.json({
+      status: 'success',
       token,
       user: {
         id: user._id,
         name: user.name,
         email: user.email,
-        phone: user.phone, // Make sure phone is included
-        username: user.username,
-        role: user.role,
-        grade: user.grade,
-        createdAt: user.createdAt,
-        enrolledCourses: user.enrolledCourses
+        role: user.role
       }
     });
 
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({
+      status: 'error',
       message: 'Server error during login'
     });
   }
