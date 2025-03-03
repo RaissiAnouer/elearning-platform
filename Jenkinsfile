@@ -1,26 +1,29 @@
-pipeline {
+pipeline{
     agent any
-    stages {
-        stage('Install Frontend Dependencies') {
-            steps {
-                dir('frontend') {
-                    sh 'npm install'  // Install frontend dependencies
-                }
+    environment{
+        imageName="monavenir"
+        fontendImage=''
+        backendImage=''
+    }
+    stages{
+        stage('checkout'){
+            steps{
+            checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/RaissiAnouer/monAvenir']])
+        
             }
+        }    
+      stage('Build fontend backend image') {
+            steps {
+                script {
+                frontendImage=docker.build('monavenir_frontend','./frontend')}
+            }    
         }
-
-        stage('Build Frontend') {
+         stage('Build backend docker image') {
             steps {
-                dir('frontend') {
-                    sh 'npm run build'  // Runs tsc and vite build in sequence
-                }
-            }
-        }
-
-        stage("Deploy") {
-            steps {
-                echo 'Deploying the application'
-            }
+                script {
+                backendImage=docker.build('monavenir_backend','./backend')}
+            }    
         }
     }
+    
 }
