@@ -1,30 +1,40 @@
-pipeline{
+pipeline {
     agent any
-    environment{
-        imageName="monavenir"
-        fontendImage=''
-        backendImage=''
+    environment {
+        imageName = "monavenir"
+        frontendImage = ''
+        backendImage = ''
     }
-    stages{
-        stage('checkout'){
-            steps{
-            sh 'git config --global http.postBuffer 524288000'  // Increase buffer size
-            checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/RaissiAnouer/monAvenir']])
-        
+    stages {
+        stage('Checkout') {
+            steps {
+                sh 'git config --global http.postBuffer 524288000'
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/RaissiAnouer/monAvenir']])
             }
-        }    
-      stage('Build fontend backend image') {
-            steps {
-                script {
-                frontendImage=docker.build('monavenir_frontend','./frontend')}
-            }    
         }
-         stage('Build backend docker image') {
+        stage('Build frontend docker image') {
             steps {
                 script {
-                backendImage=docker.build('monavenir_backend','./backend')}
-            }    
+                    frontendImage = docker.build('monavenir_frontend', './frontend')
+                }
+            }
+        }
+        stage('Build backend docker image') {
+            steps {
+                script {
+                    backendImage = docker.build('monavenir_backend', './backend')
+                }
+            }
+        }
+        stage('Uploading to Nexus') {
+            steps {
+                script {
+                    docker.withRegistry('http://localhost:8081', 'nexus') {
+                        frontendImage.push('latest')
+                        backendImage.push('latest')
+                    }
+                }
+            }
         }
     }
-    
 }
