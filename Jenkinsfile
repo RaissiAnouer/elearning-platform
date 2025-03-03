@@ -8,6 +8,7 @@ pipeline{
     stages{
         stage('checkout'){
             steps{
+            sh 'git config --global http.postBuffer 524288000'  // Increase buffer size
             checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/RaissiAnouer/monAvenir']])
         
             }
