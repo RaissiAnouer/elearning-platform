@@ -1,1 +1,7 @@
-#we gonna test the webhook
+// Adding a new function to test Jenkins build trigger
+function testJenkinsBuild() {
+    console.log("This is a test function to trigger Jenkins build!");
+}
+
+// Call the function to test
+testJenkinsBuild();
