@@ -3,7 +3,6 @@ pipeline {
     environment {
         frontendImage = ''
         backendImage = ''
-        klk=''
     }
     stages {
         stage('Checkout') {
