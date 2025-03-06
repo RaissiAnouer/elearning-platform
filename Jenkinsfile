@@ -1,7 +1,6 @@
 pipeline {
     agent any
     environment {
-        imageName = "monavenir"
         frontendImage = ''
         backendImage = ''
     }
