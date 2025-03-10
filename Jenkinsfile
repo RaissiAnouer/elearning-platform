@@ -1,35 +1,41 @@
 pipeline {
     agent any
+
     environment {
-        frontendImage = ''
-        backendImage = ''
-        kjlk='iu'
+        NEXUS_URL = 'http://localhost:8081'  // Update this if necessary
+        NEXUS_CREDENTIALS = 'nexus' // Ensure this matches the credentials ID in Jenkins
+        DOCKER_REPO = 'repository/docker-hosted/' // Check if this is your Nexus repository path
     }
+
     stages {
         stage('Checkout') {
             steps {
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/RaissiAnouer/monAvenir']])
+                script {
+                    checkout scm
+                }
             }
         }
+
         stage('Build frontend docker image') {
             steps {
                 script {
-                    frontendImage = docker.build('monavenir_frontend', './frontend')
+                    def frontendImage = docker.build("monavenir_frontend", "./frontend")
+                    frontendImage.tag('latest')
+                    
+                    docker.withRegistry("${NEXUS_URL}/${DOCKER_REPO}", NEXUS_CREDENTIALS) {
+                        frontendImage.push('latest')
+                    }
                 }
             }
         }
+
         stage('Build backend docker image') {
             steps {
                 script {
-                    backendImage = docker.build('monavenir_backend', './backend')
-                }
-            }
-        }
-        stage('Uploading to Nexus') {
-            steps {
-                script {
-                    docker.withRegistry('http://localhost:8081', 'nexus') {
-                        frontendImage.push('latest')
+                    def backendImage = docker.build("monavenir_backend", "./backend")
+                    backendImage.tag('latest')
+                    
+                    docker.withRegistry("${NEXUS_URL}/${DOCKER_REPO}", NEXUS_CREDENTIALS) {
                         backendImage.push('latest')
                     }
                 }
