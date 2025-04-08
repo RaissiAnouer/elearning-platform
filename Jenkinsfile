@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        NEXUS_URL = 'http://localhost:8081'  // Update if necessary
-        NEXUS_CREDENTIALS = 'nexus' // Ensure this matches Jenkins credentials
-        DOCKER_REPO = 'repository/docker-hosted/' // Verify the correct repository path
+        NEXUS_URL = 'http://localhost:8081'  
+        NEXUS_CREDENTIALS = 'nexus' 
+        DOCKER_REPO = 'repository/docker-hosted/' 
     }
 
     stages {
