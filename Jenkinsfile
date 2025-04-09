@@ -11,7 +11,7 @@ pipeline {
             steps {
                 script {
                     // Build the frontend Docker image
-                    def frontendImage = docker.build("192.168.96.128:5000/monavenir_frontend", "./frontend")
+                    def frontendImage = docker.build("monavenir_frontend", "./frontend")
 
                     // Push to Nexus Docker registry
                     docker.withRegistry("${NEXUS_REGISTRY}", "${NEXUS_CREDENTIALS}") {
@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     // Build the backend Docker image
-                    def backendImage = docker.build("192.168.96.128:5000/monavenir_backend", "./server")
+                    def backendImage = docker.build("monavenir_backend", "./server")
 
                     // Push to Nexus Docker registry
                     docker.withRegistry("${NEXUS_REGISTRY}", "${NEXUS_CREDENTIALS}") {
