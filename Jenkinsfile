@@ -26,7 +26,7 @@ pipeline {
             steps {
                 script {
                     // Build the backend Docker image
-                    def backendImage = docker.build("192.168.96.128:5000/monavenir_backend", "./backend")
+                    def backendImage = docker.build("192.168.96.128:5000/monavenir_backend", "./server")
                     backendImage.tag('latest')
 
                     // Push to Nexus Docker registry
