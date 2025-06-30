@@ -66,12 +66,13 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            echo 'Cleaning up ZIP files...'
-            sh 'rm -f frontend/frontend.zip || true'
-            sh 'rm -f server/backend.zip || true'
+  post {
+    always {
+        script {
+            sh "docker system prune -f"
         }
+        echo "Pipeline execution completed"
+    }
         success {
             echo 'Pipeline finished successfully '
         }
