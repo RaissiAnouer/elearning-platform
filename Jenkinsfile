@@ -8,9 +8,6 @@ pipeline {
         FRONTEND_APP_NAME = 'pfe-frontend'
         BACKEND_APP_NAME = 'pfe-backend'
     }
-    tools {
-  nodejs "${Nodejs-24}"
-}
 
     stages {
         stage('Checkout') {
