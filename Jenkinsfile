@@ -66,12 +66,12 @@ pipeline {
         }
     }
 
-  post {
-    always {
-        script {
-            sh "docker system prune -f"
+   post {
+     always {
+         script {
+             sh "docker system prune -f"
         }
-        echo "Pipeline execution completed"
+      echo "Pipeline execution completed"
     }
         success {
             echo 'Pipeline finished successfully '
