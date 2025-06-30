@@ -1,30 +1,82 @@
-pipeline{
+pipeline {
     agent any
-    enivrement{
-        
+
+    environment {
+        AZURE_CREDENTIALS_ID = 'azure-credentials'         // Jenkins credentials (username + password of Azure SP)
+        AZURE_SUBSCRIPTION_ID = 'AZURE_SUBSCRIPTION_ID'     // Jenkins secret text with sub ID
+        RESOURCE_GROUP = 'devops-rg'
+        FRONTEND_APP_NAME = 'pfe-frontend'
+        BACKEND_APP_NAME = 'pfe-backend'
     }
-    stages{
-        stage('checkout'){
-            steps{
-                echo'checking out the code'
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo 'Checking out code...'
                 checkout scm
+            }
         }
-    }
-        stage('build'){
-            steps{
-                dir('frontend'){
+
+        stage('Build') {
+            steps {
+                dir('frontend') {
                     sh 'npm install'
                     sh 'npm run build'
                 }
-                dir('server'){
+                dir('server') {
                     sh 'npm install'
-                    sh 'npm rurn build'
+                    sh 'npm run build'
                 }
-                echo 'application successfully built'
-         
+                echo 'Build completed'
             }
         }
-        stage('deploy'){
-            
 
+        stage('Deploy to Azure') {
+            steps {
+                withCredentials([
+                    usernamePassword(credentialsId: "${AZURE_CREDENTIALS_ID}", usernameVariable: 'AZURE_USER', passwordVariable: 'AZURE_PASSWORD'),
+                    string(credentialsId: "${AZURE_SUBSCRIPTION_ID}", variable: 'AZ_SUBSCRIPTION')
+                ]) {
+                    sh 'az login -u $AZURE_USER -p $AZURE_PASSWORD'
+                    sh 'az account set --subscription $AZ_SUBSCRIPTION'
+
+                    dir('server') {
+                        sh '''
+                            zip -r backend.zip .
+                            az webapp deployment source config-zip \
+                              --resource-group ${RESOURCE_GROUP} \
+                              --name ${BACKEND_APP_NAME} \
+                              --src backend.zip
+                        '''
+                    }
+
+                    dir('frontend') {
+                        sh '''
+                            zip -r frontend.zip .
+                            az webapp deployment source config-zip \
+                              --resource-group ${RESOURCE_GROUP} \
+                              --name ${FRONTEND_APP_NAME} \
+                              --src frontend.zip
+                        '''
+                    }
+
+                    echo 'Deployment to Azure App Services completed successfully!'
+                }
+            }
         }
+    }
+
+    post {
+        always {
+            echo 'Cleaning up ZIP files...'
+            sh 'rm -f frontend/frontend.zip || true'
+            sh 'rm -f server/backend.zip || true'
+        }
+        success {
+            echo 'Pipeline finished successfully '
+        }
+        failure {
+            echo 'Pipeline failed  check logs'
+        }
+    }
+}
